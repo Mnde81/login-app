@@ -9,6 +9,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
     $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm_password']);
+
+    if($password !== $confirm_password) {
+        $error = "Passwords do not match";
+    } else {
+
+        $sql = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
+        $result = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($result) === 1) {
+            $error = "Username already exists, Please choose another";
+
+        } else {
+
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+            $sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$passwordHash', '$email')";
+
+            if(mysqli_query($conn, $sql)) {
+                echo "Data inserted";
+            } else {
+                $error = "Something happened no data inserted, error: " . mysqli_error($conn);
+            };
+
+        }
+
+        // if($result) {
+        //     echo "<pre>";
+        //     var_dump($result);
+        //     echo "</pre>";
+        // }
+
+
+
+        
+      
+
+    }
 }
 
 ?>
@@ -21,6 +58,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Document</title>
 </head>
 <body>
+
+<h2>Register</h2>
+
+<?php if($error): ?>
+
+<p style="color:red">
+    <?php echo $error; ?>
+</p>
+
+<?php endif; ?>
+
+
 <form method="POST" action="">
         <h2>Create your Account</h2>
 
@@ -42,3 +91,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </body>
 </html>
+
+<?php
+mysqli_close($conn);
+?>
