@@ -1,6 +1,8 @@
 <?php
 
-include 'db.php';
+include "partials/header.php";
+include "partials/navigation.php";
+
 
 $error = "";
 
@@ -34,14 +36,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
         }
 
-        // if($result) {
-        //     echo "<pre>";
-        //     var_dump($result);
-        //     echo "</pre>";
-        // }
-
-
-
+    
         
       
 
@@ -50,14 +45,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+<div class="container">
 
 <h2>Register</h2>
 
@@ -89,8 +77,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <input type="submit" value="Register">
     </form>
-</body>
-</html>
+
+</div>
+<?php
+include "partials/footer.php";
+?>
 
 <?php
 mysqli_close($conn);
