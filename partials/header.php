@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+include "functions.php";
 session_start();
 
 ?>
@@ -14,4 +15,4 @@ session_start();
 
    
 </head>
-<body>
+<body class="<?php echo getPageClass()?>">

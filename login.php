@@ -50,7 +50,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="container">
 
-<h2>Login</h2>
+
+
+
+
+<div class="form-container">
+
+
+
+   
+<form method="POST" action="">   
+<h2>Login</h2>   
 
 <?php if($error): ?>
 
@@ -60,17 +70,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php endif; ?>
 
-
-<form method="POST" action="">      
-
-        <label for="username">Username:</label><br>
-        <input value="<?php echo isset($username) ? $username : ''; ?>"  placeholder="Enter your username" type="text" name="username" required><br><br>
+        <label for="username">Username:</label>
+        <input value="<?php echo isset($username) ? $username : ''; ?>"  placeholder="Enter your username" type="text" name="username" required>
         
-        <label for="password">Password:</label><br>
-        <input placeholder="Enter your password"  type="password" name="password" required><br><br>       
+        <label for="password">Password:</label>
+        <input placeholder="Enter your password"  type="password" name="password" required>      
 
         <input type="submit" value="Login">
     </form>
+    </div>
 
 </div>
 

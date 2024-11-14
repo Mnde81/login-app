@@ -29,7 +29,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "INSERT INTO users (username, password, email) VALUES ('$username', '$passwordHash', '$email')";
 
             if(mysqli_query($conn, $sql)) {
-                echo "Data inserted";
+                $_SESSION['logged_in'] = true;
+                $_SESSION['username'] = $username;
+                header("Location: admin.php");
+                exit;
             } else {
                 $error = "Something happened no data inserted, error: " . mysqli_error($conn);
             };
@@ -47,7 +50,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="container">
 
-<h2>Register</h2>
+
+
+
+
+
+<div class="form-container">
+
+
+
+<form method="POST" action="">
+<h2>Create your Account</h2>
 
 <?php if($error): ?>
 
@@ -56,27 +69,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </p>
 
 <?php endif; ?>
-
-
-<form method="POST" action="">
-        <h2>Create your Account</h2>
+        
 
       
 
-        <label for="username">Username:</label><br>
-        <input value="<?php echo isset($username) ? $username : ''; ?>"  placeholder="Enter your username" type="text" name="username" required><br><br>
+        <label for="username">Username:</label>
+        <input value="<?php echo isset($username) ? $username : ''; ?>"  placeholder="Enter your username" type="text" name="username" required>
 
-        <label for="email">Email:</label><br>
-        <input  value="<?php echo isset($email) ? $email : ''; ?>" placeholder="Enter your email"  type="email" name="email" required><br><br>
+        <label for="email">Email:</label>
+        <input  value="<?php echo isset($email) ? $email : ''; ?>" placeholder="Enter your email"  type="email" name="email" required>
 
-        <label for="password">Password:</label><br>
-        <input placeholder="Enter your password"  type="password" name="password" required><br><br>
+        <label for="password">Password:</label>
+        <input placeholder="Enter your password"  type="password" name="password" required>
 
-        <label for="confirm_password">Confirm Password:</label><br>
-        <input  placeholder="Confirm your password" type="password" name="confirm_password" required><br><br>
+        <label for="confirm_password">Confirm Password:</label>
+        <input  placeholder="Confirm your password" type="password" name="confirm_password" required>
 
         <input type="submit" value="Register">
     </form>
+    </div>
 
 </div>
 <?php
