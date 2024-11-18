@@ -8,3 +8,14 @@ if ($conn) {
 } else {
     echo "Not connected" . mysqli_error($conn);
 }
+
+
+function check_query($result) {
+    global $conn;
+    if(!$result) {
+        return "Error" . mysqli_error($conn);
+
+    }
+
+    return true;
+}

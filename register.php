@@ -16,10 +16,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Passwords do not match";
     } else {
 
-        $sql = "SELECT * FROM users WHERE username = '$username' LIMIT 1";
-        $result = mysqli_query($conn, $sql);
+        
 
-        if(mysqli_num_rows($result) === 1) {
+        if(user_exists($conn, $username)) {
             $error = "Username already exists, Please choose another";
 
         } else {
@@ -31,7 +30,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             if(mysqli_query($conn, $sql)) {
                 $_SESSION['logged_in'] = true;
                 $_SESSION['username'] = $username;
-                header("Location: admin.php");
+                redirect("admin.php");
                 exit;
             } else {
                 $error = "Something happened no data inserted, error: " . mysqli_error($conn);
