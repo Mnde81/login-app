@@ -14,15 +14,33 @@ $result = mysqli_query($conn, "SELECT id, username, email, reg_date FROM users")
 if($_SERVER['REQUEST_METHOD'] === "POST") {
     if(isset($_POST['edit_user'])) {
         $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
+        $new_username = mysqli_real_escape_string($conn, $_POST['username']);
         $new_email = mysqli_real_escape_string($conn, $_POST['email']);
 
-        $sql = "UPDATE users SET email = '$new_email' WHERE id = $user_id";
+        $sql = "UPDATE users SET email = '$new_email', username = '$new_username' WHERE id = $user_id";
         $result = mysqli_query($conn, $sql);
-        if(check_query($result)) {
+        $query_status = check_query($result);
+        if($query_status === true) {
+            $_SESSION['message'] = "User updated successfully to {$new_username}";
+            $_SESSION['msg_type'] = "success";
+
             redirect("admin.php");
 
         }
         
+    } elseif(isset($_POST['delete_user'])) {
+        $user_id = mysqli_real_escape_string($conn, $_POST['user_id']);
+        $sql = "DELETE FROM users WHERE id = $user_id";
+        $result = mysqli_query($conn, $sql);
+        $query_status = check_query($result);
+        if($query_status === true) {            
+            $_SESSION['message'] = "User deleted successfully record with ID: {$user_id}";
+            $_SESSION['msg_type'] = "success";
+
+            redirect("admin.php");
+
+        }
+
     }
 }
 
@@ -30,33 +48,26 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
 
 
 
-<nav>
-    <ul>
-        <li>
-            <a href="index.html">Home</a>
-        </li>
 
-        <!-- When the user is logged in -->
-        <li>
-            <a href="admin.html">Admin</a>
-        </li>
-        <li>
-            <a href="logout.html">Logout</a>
-        </li>
-
-        <!-- When the user is not logged in -->
-        <li>
-            <a href="register.html">Register</a>
-        </li>
-        <li>
-            <a href="login.html">Login</a>
-        </li>
-    </ul>
-</nav>
 
 <h1>Manage Users</h1>
 
+
 <div class="container">
+<?php if(isset($_SESSION['message'])): ?>
+
+    <div class="notification <?php echo $_SESSION['msg_type'] ?>">
+        <?php
+
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+        unset($_SESSION['msg_type']);
+
+        ?>
+
+    </div>
+
+<?php endif; ?>
     <table class="user-table">
         <thead>
         <tr>
@@ -79,6 +90,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST") {
             <td>
                 <form method="POST" style="display:inline-block;">
                     <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                    <input type="text" name="username" value="<?php echo $user['username']; ?>" required>
                     <input type="email" name="email" value="<?php echo $user['email']; ?>" required>
                     <button class="edit" type="submit" name="edit_user">Edit</button>
                 </form>

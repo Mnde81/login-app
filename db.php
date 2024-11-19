@@ -1,12 +1,19 @@
 <?php
 
-$conn = mysqli_connect("localhost", "root", "", "login_app");
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "login_app";
 
-if ($conn) {
-    // echo "Connected";
+$conn = mysqli_connect($host, $username, $password, $database);
+
+if (!$conn) {
+
+    die("Connection failed" . mysqli_connect_error());
+    
 
 } else {
-    echo "Not connected" . mysqli_error($conn);
+    // echo "Connected";
 }
 
 
